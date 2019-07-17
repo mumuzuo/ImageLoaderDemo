@@ -2,7 +2,6 @@ package com.z.imageloader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.LruCache;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -20,33 +19,9 @@ import java.util.concurrent.Executors;
 public class ImageLoader {
 
     //图片缓存
-    private LruCache<String, Bitmap> mImageCache;
+    private ImageCache mImageCache = new ImageCache();
     //线程池，线程数量为cpu的核数
     ExecutorService mExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-    public ImageLoader() {
-        initImageCache();
-    }
-
-    /**
-     * 初始化图片缓存，创建LruCache对象，设置缓存大小，获取缓存图片大小
-     */
-    private void initImageCache() {
-        //计算可使用的最大内存
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        //取四分之一的可用内存作为缓存
-        final int cacheSize = maxMemory / 8;
-        /**
-         * ①设置LruCache缓存的大小，一般为当前进程可用容量的1/8。
-         * ②重写sizeOf方法，计算出要缓存的每张图片的大小。
-         */
-        mImageCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap value) {
-                return value.getRowBytes() * value.getHeight() / 1024;
-            }
-        };
-    }
 
     /**
      * 展示网络图片,同时异步去下载
