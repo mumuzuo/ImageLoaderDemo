@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
+import com.z.imageloader.cache.MemoryCache;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,9 +21,13 @@ import java.util.concurrent.Executors;
 public class ImageLoader {
 
     //图片缓存
-    private ImageCache mImageCache = new ImageCache();
+    private ImageCache mImageCache = new MemoryCache();
     //线程池，线程数量为cpu的核数
     ExecutorService mExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+    public void setImageCache(ImageCache mImageCache) {
+        this.mImageCache = mImageCache;
+    }
 
     /**
      * 展示网络图片,同时异步去下载

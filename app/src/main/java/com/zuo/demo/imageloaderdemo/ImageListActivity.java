@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.z.imageloader.ImageLoader;
+import com.z.imageloader.cache.DoubleCache;
 import com.zuo.demo.imageloaderdemo.adapter.ImageAdapter;
 import com.zuo.demo.imageloaderdemo.data.ImageDataGetHelper;
 import com.zuo.demo.imageloaderdemo.databinding.ActivityImageListBinding;
@@ -21,7 +22,9 @@ public class ImageListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_image_list);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_list);
+        DoubleCache doubleCache = new DoubleCache();
         imageLoader = new ImageLoader();
+        imageLoader.setImageCache(doubleCache);
         initView();
     }
 
